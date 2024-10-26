@@ -5,7 +5,7 @@ describe "User accesses homepage" do
     it "gets redirected to login page" do
       visit root_path
 
-      expect(current_path).to be new_user_session_path
+      expect(current_path).to eq new_user_session_path
     end
   end
 end
