@@ -2,12 +2,13 @@ require 'rails_helper'
 
 describe User do
   describe "#valid?" do
+    let(:valid_cpf) { CPF.generate(true) }
     context "with missing data" do
       it "should be false with no name" do
         user = User.new(
           name: '',
           lastname: 'Bezos',
-          personal_national_id: '0000000000',
+          personal_national_id: valid_cpf,
           email: 'jeffbezos@amazon.com',
           password: 'jeff2*6bezos'
           )
@@ -19,7 +20,7 @@ describe User do
         user = User.new(
           name: 'Jeff',
           lastname: '',
-          personal_national_id: '0000000000',
+          personal_national_id: valid_cpf,
           email: 'jeffbezos@amazon.com',
           password: 'jeff2*6bezos'
           )
@@ -43,7 +44,7 @@ describe User do
         user = User.new(
           name: 'Jeff',
           lastname: 'Bezos',
-          personal_national_id: '0000000000',
+          personal_national_id: valid_cpf,
           email: '',
           password: 'jeff2*6bezos'
           )
@@ -55,7 +56,7 @@ describe User do
         user = User.new(
           name: 'Jeff',
           lastname: 'Bezos',
-          personal_national_id: '0000000000',
+          personal_national_id: valid_cpf,
           email: 'jeffbezos@amazon.com',
           password: ''
           )
@@ -69,7 +70,7 @@ describe User do
         user = User.new(
           name: 'J',
           lastname: 'Bezos',
-          personal_national_id: '0000000000',
+          personal_national_id: valid_cpf,
           email: 'jeffbezos@amazon.com',
           password: 'jeff2*6bezos'
           )
@@ -82,7 +83,7 @@ describe User do
         user = User.new(
           name: 'Jeffffffffffffffffffffffff',
           lastname: 'Bezos',
-          personal_national_id: '0000000000',
+          personal_national_id: valid_cpf,
           email: 'jeffbezos@amazon.com',
           password: 'jeff2*6bezos'
           )
@@ -95,7 +96,7 @@ describe User do
         user = User.new(
           name: 'Jeff',
           lastname: 'B',
-          personal_national_id: '0000000000',
+          personal_national_id: valid_cpf,
           email: 'jeffbezos@amazon.com',
           password: 'jeff2*6bezos'
           )
@@ -108,7 +109,7 @@ describe User do
         user = User.new(
           name: 'Jeff',
           lastname: 'Bezossssssssssssssssssssss',
-          personal_national_id: '0000000000',
+          personal_national_id: valid_cpf,
           email: 'jeffbezos@amazon.com',
           password: 'jeff2*6bezos'
           )
@@ -147,7 +148,7 @@ describe User do
         user = User.new(
           name: 'Jeff',
           lastname: 'Bezos',
-          personal_national_id: '0123.456.789-10',
+          personal_national_id: valid_cpf,
           email: '@amazon.com',
           password: 'jeff2*6bezosbezos'
           )
@@ -159,7 +160,7 @@ describe User do
         user = User.new(
           name: 'Jeff',
           lastname: 'Bezos',
-          personal_national_id: '0123.456.789-10',
+          personal_national_id: valid_cpf,
           email: 'jeffbezos@amazon.com',
           password: 'jeff2*6'
           )
@@ -174,7 +175,7 @@ describe User do
         user = User.new(
           name: 'Jeff',
           lastname: 'Bezos',
-          personal_national_id: '123.456.789-10',
+          personal_national_id: valid_cpf,
           email: 'jeffbezos@amazon.com',
           password: 'jeff2*6bezos'
           )
