@@ -8,9 +8,8 @@ class User < ApplicationRecord
 
   validates :name, :lastname, :personal_national_id, presence: true
   validates :name, :lastname, length: { minimum: 2, maximum: 25 }
-  validates :email, uniqueness: true
   validates :password, length: { minimum: 12 }
-  validates :personal_national_id, uniqueness: true
+  validates :email, :personal_national_id, uniqueness: true
   validate :personal_national_id_must_be_valid_CPF
 
   private
