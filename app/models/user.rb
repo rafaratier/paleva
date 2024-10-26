@@ -5,4 +5,18 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_one :establishment, foreign_key: :owner_id, dependent: :destroy
+
+  validates :name, :lastname, :personal_national_id, presence: true
+  validates :name, length: { minimum: 2, maximum: 25 }
+  validates :lastname, length: { minimum: 2, maximum: 25 }
+  validates :password, length: { minimum: 12 }
+  validate :personal_national_id_must_be_valid_CPF
+
+  private
+
+  def personal_national_id_must_be_valid_CPF
+    unless CPF.valid?(personal_national_id)
+      errors.add(:personal_national_id)
+    end
+  end
 end
