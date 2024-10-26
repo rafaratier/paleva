@@ -140,7 +140,7 @@ describe User do
           )
 
         expect(user.valid?).to be false
-        expect(user.lastname.length).to be > 14
+        expect(user.personal_national_id.length).to be > 14
       end
 
       it "should be false when email is too short" do
@@ -174,7 +174,7 @@ describe User do
         user = User.new(
           name: 'Jeff',
           lastname: 'Bezos',
-          personal_national_id: '0123.456.789-10',
+          personal_national_id: '123.456.789-10',
           email: 'jeffbezos@amazon.com',
           password: 'jeff2*6bezos'
           )
