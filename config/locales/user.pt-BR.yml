@@ -1,0 +1,11 @@
+pt-BR:
+  activerecord:
+    models:
+      user:
+        one: Usuário
+        other: Usuários
+    attributes:
+      user:
+        name: Nome
+        lastname: Sobrenome
+        personal_national_id: CPF
