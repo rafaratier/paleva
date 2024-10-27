@@ -188,12 +188,11 @@ describe Establishment do
             thursday: [ '12:00', '20:00' ],
             friday: [ '12:00', '22:00' ],
             saturday: [ '12:00', '22:00' ] },
-          owner: valid_user,
-          address: nil
+          owner: valid_user
         )
 
-        expect(establishment.valid?).to be true
-        expect(establishment.errors[:business_hours]).to include("must include all weekdays: sunday, monday, tuesday, wednesday, thursday, friday, saturday")
+        expect(establishment.valid?).to be false
+        expect(establishment.errors[:business_hours]).to include("Deve incluir todos os dias da semana.")
       end
     end
 
@@ -327,7 +326,7 @@ describe Establishment do
         )
 
         expect(establishment.valid?).to be false
-        expect(establishment.trade_name.length).to be > 18
+        expect(establishment.business_national_id.length).to be > 18
       end
 
       it "should be false when phone is too short" do
@@ -371,7 +370,7 @@ describe Establishment do
         )
 
         expect(establishment.valid?).to be false
-        expect(establishment.trade_name.length).to be > 11
+        expect(establishment.phone.length).to be > 11
       end
 
       it "should be false when email is invalid" do
@@ -396,28 +395,6 @@ describe Establishment do
       end
 
       it "should be false when business hours is not a hash with week days as keys" do
-        establishment = Establishment.new(
-          trade_name: 'Paleva',
-          legal_name: 'Pega e leva ME',
-          business_national_id: valid_cnpj,
-          phone: '0123456789',
-          email: 'contato@paleva.com.br',
-          business_hours: [
-            sunday: [],
-            monday: [ '12:00', '20:00' ],
-            tuesday: [ '12:00', '20:00' ],
-            wednesday: [ '12:00', '20:00' ],
-            thursday: [ '12:00', '20:00' ],
-            friday: [ '12:00', '22:00' ],
-            saturday: [ '12:00', '22:00' ] ],
-          owner: valid_user
-        )
-
-        expect(establishment.valid?).to be false
-        expect(establishment.business_hours.is_a?(Hash)).not_to be true
-      end
-
-            it "should be false when business hours is not a hash with week days as keys" do
         establishment = Establishment.new(
           trade_name: 'Paleva',
           legal_name: 'Pega e leva ME',
