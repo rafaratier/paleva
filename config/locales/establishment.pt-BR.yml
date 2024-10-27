@@ -1,0 +1,19 @@
+pt-BR:
+  activerecord:
+    models:
+      establishment:
+        one: Estabelecimento
+        other: Estabelecimentos
+    attributes:
+      establishment:
+        trade_name: Nome fantasia
+        lastname: Razão social
+        business_national_id: CNPJ
+        phone: Telefone
+        email: E-mail
+        business_hours: Horário de funcionamento
+        address: Endereço
+    errors:
+      messages:
+        missing_week_days: Deve incluir todos os dias da semana.
+        wrong_format: Formato errado.

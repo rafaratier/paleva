@@ -12,6 +12,8 @@ class User < ApplicationRecord
   validates :email, :personal_national_id, uniqueness: true
   validate :personal_national_id_must_be_valid_CPF
 
+  validates :email, email: true
+
   private
 
   def personal_national_id_must_be_valid_CPF
