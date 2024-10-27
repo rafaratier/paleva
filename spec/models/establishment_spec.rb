@@ -174,6 +174,27 @@ describe Establishment do
 
         expect(establishment.valid?).to be true
       end
+
+      it "should be false when business hours is missing days of the week" do
+        establishment = Establishment.new(
+          trade_name: 'Paleva',
+          legal_name: 'Pega e leva ME',
+          business_national_id: valid_cnpj,
+          phone: '0123456789',
+          email: 'contato@paleva.com.br',
+          business_hours: {
+            tuesday: [ '12:00', '20:00' ],
+            wednesday: [ '12:00', '20:00' ],
+            thursday: [ '12:00', '20:00' ],
+            friday: [ '12:00', '22:00' ],
+            saturday: [ '12:00', '22:00' ] },
+          owner: valid_user,
+          address: nil
+        )
+
+        expect(establishment.valid?).to be true
+        expect(establishment.errors[:business_hours]).to include("must include all weekdays: sunday, monday, tuesday, wednesday, thursday, friday, saturday")
+      end
     end
 
     context "with wrong data" do
@@ -372,6 +393,50 @@ describe Establishment do
         )
 
         expect(establishment.valid?).to be false
+      end
+
+      it "should be false when business hours is not a hash with week days as keys" do
+        establishment = Establishment.new(
+          trade_name: 'Paleva',
+          legal_name: 'Pega e leva ME',
+          business_national_id: valid_cnpj,
+          phone: '0123456789',
+          email: 'contato@paleva.com.br',
+          business_hours: [
+            sunday: [],
+            monday: [ '12:00', '20:00' ],
+            tuesday: [ '12:00', '20:00' ],
+            wednesday: [ '12:00', '20:00' ],
+            thursday: [ '12:00', '20:00' ],
+            friday: [ '12:00', '22:00' ],
+            saturday: [ '12:00', '22:00' ] ],
+          owner: valid_user
+        )
+
+        expect(establishment.valid?).to be false
+        expect(establishment.business_hours.is_a?(Hash)).not_to be true
+      end
+
+            it "should be false when business hours is not a hash with week days as keys" do
+        establishment = Establishment.new(
+          trade_name: 'Paleva',
+          legal_name: 'Pega e leva ME',
+          business_national_id: valid_cnpj,
+          phone: '0123456789',
+          email: 'contato@paleva.com.br',
+          business_hours: [
+            sunday: [],
+            monday: [ '12:00', '20:00' ],
+            tuesday: [ '12:00', '20:00' ],
+            wednesday: [ '12:00', '20:00' ],
+            thursday: [ '12:00', '20:00' ],
+            friday: [ '12:00', '22:00' ],
+            saturday: [ '12:00', '22:00' ] ],
+          owner: valid_user
+        )
+
+        expect(establishment.valid?).to be false
+        expect(establishment.business_hours.is_a?(Hash)).not_to be true
       end
     end
 
