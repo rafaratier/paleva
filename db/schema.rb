@@ -20,8 +20,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_26_015624) do
     t.string "country", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "establishment_id"
-    t.index ["establishment_id"], name: "index_addresses_on_establishment_id"
   end
 
   create_table "establishments", force: :cascade do |t|
@@ -30,9 +28,12 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_26_015624) do
     t.string "business_national_id", null: false
     t.string "phone", null: false
     t.string "email", null: false
+    t.text "business_hours", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "owner_id", null: false
+    t.integer "address_id"
+    t.index ["address_id"], name: "index_establishments_on_address_id"
     t.index ["business_national_id"], name: "index_establishments_on_business_national_id", unique: true
     t.index ["email"], name: "index_establishments_on_email", unique: true
     t.index ["owner_id"], name: "index_establishments_on_owner_id"
@@ -57,7 +58,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_26_015624) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "addresses", "establishments"
+  add_foreign_key "establishments", "addresses"
   add_foreign_key "establishments", "users", column: "owner_id"
-  add_foreign_key "users", "establishments"
 end
