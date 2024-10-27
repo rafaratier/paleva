@@ -115,6 +115,7 @@ pt-BR:
       already_signed_out: Logout efetuado com sucesso.
       new:
         sign_in: Entrar
+      sign_out: Sair
       signed_in: Login efetuado com sucesso.
       signed_out: Logout efetuado com sucesso.
     shared:

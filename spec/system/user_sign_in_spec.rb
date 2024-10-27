@@ -60,7 +60,7 @@ describe "User sign in" do
         click_on 'Entrar'
       end
 
-      expect(page).to have_content 'Olá, Jeff Bezos.'
+      expect(page).to have_content 'Olá, Jeff Bezos'
       expect(current_path).to eq root_path
     end
   end
