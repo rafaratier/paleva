@@ -1,0 +1,13 @@
+=> 
+[32m#<Establishment:0x00007c5c11b871c8[0m
+ id: [36m[1mnil[0m,
+ trade_name: [31m[1m"[0m[31mpaleva[0m[31m[1m"[0m,
+ legal_name: [31m[1m"[0m[31mPega e leva ME[0m[31m[1m"[0m,
+ business_national_id: [31m[1m"[0m[31mcnpj[0m[31m[1m"[0m,
+ phone: [31m[1m"[0m[31m0123456789[0m[31m[1m"[0m,
+ email: [31m[1m"[0m[31m[FILTERED][0m[31m[1m"[0m,
+ business_hours: [31m[1m"[0m[31m{:sunday=>[], :monday=>[\"12:00\", \"20:00\"], :tuesda...[0m[31m[1m"[0m,
+ created_at: [36m[1mnil[0m,
+ updated_at: [36m[1mnil[0m,
+ owner_id: [36m[1mnil[0m,
+ address_id: [36m[1mnil[0m[32m>[0m
