@@ -115,7 +115,7 @@ describe 'User sign up' do
 
       expect(page).to have_content 'Cadastro realizado com sucesso.'
       expect(User.last.personal_national_id).to eq valid_cpf
-      expect(current_path).to eq root_path
+      expect(current_path).to eq new_establishment_path
     end
   end
 end

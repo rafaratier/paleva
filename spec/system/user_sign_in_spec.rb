@@ -50,8 +50,10 @@ describe "User sign in" do
     end
   end
 
-  context "with valid data" do
-    it "can successfully sign in" do
+  context "with valid data and without registered establishment" do
+    it "can successfully sign in and see establishment registration page" do
+      user = User.find_by!(email: 'jeffbezos@amazon.com')
+      logout(user)
       visit new_user_session_path
 
       within('form') do
@@ -61,6 +63,35 @@ describe "User sign in" do
       end
 
       expect(page).to have_content 'Olá, Jeff Bezos'
+      expect(user.establishment.nil?).to be true
+      expect(current_path).to eq new_establishment_path
+    end
+  end
+
+  context "with valid data and registered establishment" do
+    it "can successfully sign in and see homepage" do
+      user = User.find_by!(email: 'jeffbezos@amazon.com')
+
+      Establishment.create!(
+        trade_name: 'Amazon',
+        legal_name: 'Amazon.com',
+        business_national_id: CNPJ.generate(true),
+        phone: '0123456789',
+        email: 'contact@amazon.com',
+        owner: user,
+        business_hours: 'every day'
+      )
+
+      visit new_user_session_path
+
+      within('form') do
+        fill_in 'E-mail', with: 'jeffbezos@amazon.com'
+        fill_in 'Senha', with: 'jeff2*6bezos'
+        click_on 'Entrar'
+      end
+
+      expect(page).to have_content 'Olá, Jeff Bezos'
+      expect(user.establishment.nil?).to be false
       expect(current_path).to eq root_path
     end
   end
