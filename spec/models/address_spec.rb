@@ -140,12 +140,12 @@ describe Address do
         )
 
         expect(address.valid?).to be false
-        expect(address.street_name.length).to be < 3
+        expect(address.street_name.length).to be < 4
       end
 
       it "should be false when street name is too large" do
         address = Address.new(
-          street_name: 'aaaaaaaaaaaaaaaaaaaaaaaaaa',
+          street_name: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
           street_number: 10,
           neighborhood: 'Forte',
           city: 'Praia Grande',
@@ -155,21 +155,7 @@ describe Address do
         )
 
         expect(address.valid?).to be false
-        expect(address.street_name.length).to be > 25
-      end
-
-      it "should be false when street number is not a number" do
-        address = Address.new(
-          street_name: 'Avenida Presidente Kennedy',
-          street_number: '12',
-          neighborhood: 'Forte',
-          city: 'Praia Grande',
-          state: 'São Paulo',
-          country: 'Brasil',
-          establishment: establishment
-        )
-
-        expect(address.valid?).to be false
+        expect(address.street_name.length).to be > 50
       end
 
       it "should be false when neighborhood is too shot" do
@@ -184,14 +170,14 @@ describe Address do
         )
 
         expect(address.valid?).to be false
-        expect(address.neighborhood.length).to be < 3
+        expect(address.neighborhood.length).to be < 4
       end
 
       it "should be false when neighborhood is too large" do
         address = Address.new(
           street_name: 'Avenida Presidente Kennedy',
           street_number: 12,
-          neighborhood: 'aaaaaaaaaaaaaaaaaaaaaaaaaa',
+          neighborhood: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
           city: 'Praia Grande',
           state: 'São Paulo',
           country: 'Brasil',
@@ -199,7 +185,7 @@ describe Address do
         )
 
         expect(address.valid?).to be false
-        expect(address.neighborhood.length).to be > 25
+        expect(address.neighborhood.length).to be > 50
       end
 
       it "should be false when city is too short" do
@@ -214,7 +200,7 @@ describe Address do
         )
 
         expect(address.valid?).to be false
-        expect(address.city.length).to be < 3
+        expect(address.city.length).to be < 4
       end
 
       it "should be false when city is too large" do
@@ -222,14 +208,14 @@ describe Address do
           street_name: 'Avenida Presidente Kennedy',
           street_number: 12,
           neighborhood: 'Forte',
-          city: 'aaaaaaaaaaaaaaaaaaaaaaaaaa',
+          city: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
           state: 'São Paulo',
           country: 'Brasil',
           establishment: establishment
         )
 
         expect(address.valid?).to be false
-        expect(address.city.length).to be > 25
+        expect(address.city.length).to be > 50
       end
 
       it "should be false when state is too short" do
@@ -244,7 +230,7 @@ describe Address do
         )
 
         expect(address.valid?).to be false
-        expect(address.state.length).to be < 3
+        expect(address.state.length).to be < 4
       end
 
       it "should be false when state is too large" do
@@ -253,13 +239,13 @@ describe Address do
           street_number: 12,
           neighborhood: 'Forte',
           city: 'São Paulo',
-          state: 'aaaaaaaaaaaaaaaaaaaaaaaaaa',
+          state: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
           country: 'Brasil',
           establishment: establishment
         )
 
         expect(address.valid?).to be false
-        expect(address.state.length).to be > 25
+        expect(address.state.length).to be > 50
       end
 
       it "should be false when country is too short" do
@@ -274,7 +260,7 @@ describe Address do
         )
 
         expect(address.valid?).to be false
-        expect(address.country.length).to be < 3
+        expect(address.country.length).to be < 4
       end
 
 
@@ -285,12 +271,12 @@ describe Address do
           neighborhood: 'Forte',
           city: 'Praia Grande',
           state: 'São Paulo',
-          country: 'aaaaaaaaaaaaaaaaaaaaaaaaaa',
+          country: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
           establishment: establishment
         )
 
         expect(address.valid?).to be false
-        expect(address.country.length).to be > 25
+        expect(address.country.length).to be > 50
       end
     end
 

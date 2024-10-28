@@ -1,6 +1,7 @@
 class Establishment < ApplicationRecord
   belongs_to :owner, class_name: "User"
   has_one :address, dependent: :destroy
+  accepts_nested_attributes_for :address
 
   serialize :business_hours, coder: JSON
 
