@@ -1,17 +1,16 @@
 require 'rails_helper'
 
 describe Establishment do
+  let(:valid_cnpj) { CNPJ.generate(true) }
+
+  let(:valid_user) { User.create!(
+    name: 'Jeff',
+    lastname: 'Bezos',
+    personal_national_id: CPF.generate(true),
+    email: 'jeffbezos@amazon.com',
+    password: 'jeff2*6bezos')
+  }
   describe "#valid?" do
-    let(:valid_cnpj) { CNPJ.generate(true) }
-
-    let(:valid_user) { User.create!(
-      name: 'Jeff',
-      lastname: 'Bezos',
-      personal_national_id: CPF.generate(true),
-      email: 'jeffbezos@amazon.com',
-      password: 'jeff2*6bezos')
-    }
-
     context "with missing data" do
       it "should be false with no trade name" do
         establishment = Establishment.new(
@@ -438,6 +437,74 @@ describe Establishment do
 
         expect(establishment.valid?).to be true
       end
+    end
+  end
+
+  describe "Establishment alphanumeric code" do
+    it "should have length 8" do
+      establishment = Establishment.create!(
+          trade_name: 'Paleva',
+          legal_name: 'Pega e leva ME',
+          business_national_id: valid_cnpj,
+          phone: '0123456789',
+          email: 'contato@paleva.com.br',
+          business_hours: {
+            sunday: [],
+            monday: [ '12:00', '20:00' ],
+            tuesday: [ '12:00', '20:00' ],
+            wednesday: [ '12:00', '20:00' ],
+            thursday: [ '12:00', '20:00' ],
+            friday: [ '12:00', '22:00' ],
+            saturday: [ '12:00', '22:00' ] },
+          owner: valid_user
+        )
+
+      expect(establishment.code.length).to eq 10
+    end
+
+    it "should be unique" do
+      establishment = Establishment.create!(
+          trade_name: 'Paleva',
+          legal_name: 'Pega e leva ME',
+          business_national_id: valid_cnpj,
+          phone: '0123456789',
+          email: 'contato@paleva.com.br',
+          business_hours: {
+            sunday: [],
+            monday: [ '12:00', '20:00' ],
+            tuesday: [ '12:00', '20:00' ],
+            wednesday: [ '12:00', '20:00' ],
+            thursday: [ '12:00', '20:00' ],
+            friday: [ '12:00', '22:00' ],
+            saturday: [ '12:00', '22:00' ] },
+          owner: valid_user
+        )
+
+      other_user = User.create!(
+        name: 'Bill',
+        lastname: 'Gates',
+        personal_national_id: CPF.generate(true),
+        email: 'billgates@amazon.com',
+        password: 'bill2*6gates')
+
+      other_establishment = Establishment.create!(
+        trade_name: 'Receba',
+        legal_name: 'Peça e Receba ME',
+        business_national_id: CNPJ.generate(true),
+        phone: '9876543210',
+        email: 'contato@receba.com.br',
+        business_hours: {
+          sunday: [],
+          monday: [ '12:00', '20:00' ],
+          tuesday: [ '12:00', '20:00' ],
+          wednesday: [ '12:00', '20:00' ],
+          thursday: [ '12:00', '20:00' ],
+          friday: [ '12:00', '22:00' ],
+          saturday: [ '12:00', '22:00' ] },
+        owner: other_user
+      )
+
+      expect(other_establishment.code).not_to eq establishment.code
     end
   end
 end
