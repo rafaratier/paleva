@@ -8,12 +8,13 @@ class Establishment < ApplicationRecord
   validates :trade_name, :legal_name, :email, :business_national_id, :phone, :owner, :business_hours, presence: true
   validates :business_national_id, :email, :phone, :owner, uniqueness: true
   validates :trade_name, :legal_name, length: { minimum: 2, maximum: 25 }
-  validates :business_national_id, length: { is: 18 }
   validates :phone, length: { minimum: 10, maximum: 11 }
 
   validates :email, email: true
 
   validate :validate_business_hours_format
+
+  validate :business_national_id_must_be_valid_CNPJ
 
   private
 
@@ -24,6 +25,12 @@ class Establishment < ApplicationRecord
       errors.add(:business_hours, :wrong_format)
     elsif business_hours.keys.map(&:to_s) != required_keys
       errors.add(:business_hours, :missing_week_days)
+    end
+  end
+
+  def business_national_id_must_be_valid_CNPJ
+    unless CNPJ.valid?(business_national_id)
+      errors.add(:business_national_id)
     end
   end
 end
