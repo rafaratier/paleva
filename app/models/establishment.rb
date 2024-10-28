@@ -3,6 +3,8 @@ class Establishment < ApplicationRecord
   has_one :address, dependent: :destroy
   accepts_nested_attributes_for :address
 
+  before_create :generate_code
+
   serialize :business_hours, coder: JSON
 
   validates :trade_name, :legal_name, :email, :business_national_id, :phone, :owner, :business_hours, presence: true
@@ -32,5 +34,9 @@ class Establishment < ApplicationRecord
     unless CNPJ.valid?(business_national_id)
       errors.add(:business_national_id)
     end
+  end
+
+  def generate_code
+    self.code = SecureRandom.alphanumeric(10)
   end
 end
