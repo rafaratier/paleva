@@ -79,7 +79,14 @@ describe "User sign in" do
         phone: '0123456789',
         email: 'contact@amazon.com',
         owner: user,
-        business_hours: 'every day'
+        business_hours: {
+          sunday: [],
+          monday: [ '12:00', '20:00' ],
+          tuesday: [ '12:00', '20:00' ],
+          wednesday: [ '12:00', '20:00' ],
+          thursday: [ '12:00', '20:00' ],
+          friday: [ '12:00', '22:00' ],
+          saturday: [ '12:00', '22:00' ] },
       )
 
       visit new_user_session_path

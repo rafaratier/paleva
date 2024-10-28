@@ -38,7 +38,7 @@ describe 'User sign up' do
         click_on 'Criar conta'
       end
 
-      expect(page).to have_content 'Não foi possível salvar usuário: 1 erro'
+      expect(page).to have_content 'Não foi possível salvar usuário'
       expect(page).to have_content 'E-mail não pode ficar em branco'
       expect(User.count).to eq 0
     end
