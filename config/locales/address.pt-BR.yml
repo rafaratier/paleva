@@ -1,0 +1,14 @@
+pt-BR:
+  activerecord:
+    models:
+      address:
+        one: Endereço
+        other: Endereços
+    attributes:
+      address:
+        street_name: Nome da rua
+        street_number: Número
+        neighborhood: Bairro
+        city: Cidade
+        state: Estado
+        country: País

@@ -10,12 +10,15 @@ class ApplicationController < ActionController::Base
 
   before_action :set_user_full_name
 
+  private
+
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [ :name, :lastname, :personal_national_id ])
   end
 
   def require_registration
-    if user_signed_in? && current_user.establishment.nil? && request.path != new_establishment_path && request.path != destroy_user_session_path
+    if user_signed_in? && current_user.establishment.nil? && request.path != new_establishment_path && request.path != destroy_user_session_path &&
+      !(request.path == establishments_path && request.post?)
       redirect_to new_establishment_path
     end
   end
