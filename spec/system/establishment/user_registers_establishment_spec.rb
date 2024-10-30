@@ -97,7 +97,7 @@ describe "Establishment registration" do
       expect(user.establishment.nil?).to be true
     end
 
-    it "can not register when email already taken " do
+    it "can not register when email already taken" do
       same_email_address = "contato@papega.com.br"
 
       other_user = User.create!(
@@ -134,6 +134,58 @@ describe "Establishment registration" do
       click_on 'Criar Estabelecimento'
 
       expect(page).to have_content 'E-mail já está em uso'
+      expect(current_path).to eq establishments_path
+      expect(user.establishment.nil?).to be true
+    end
+
+    it "can not register when trade name already taken within state" do
+      same_trade_name = 'Papega'
+      same_state = 'São Paulo'
+
+      other_user = User.create!(
+        name: 'Bill',
+        lastname: 'Gates',
+        personal_national_id: CPF.generate(true),
+        email: 'billgates@outlook.com',
+        password: 'bill2*6gates')
+
+      other_establishment = Establishment.create!(
+        trade_name: same_trade_name,
+        legal_name: 'Pede e Pega ME',
+        business_national_id: CNPJ.generate(true),
+        phone: '9876543210',
+        email: 'contato@papega.com.br',
+        owner: other_user
+      )
+
+      Address.create!(
+        street_name: 'Av: Pres. Wilson',
+        street_number: 10,
+        neighborhood: 'Boa Vista',
+        city: 'São Vicente',
+        state: same_state,
+        country: 'Brasil',
+        establishment: other_establishment
+      )
+
+      login_as(user)
+      visit root_path
+
+      fill_in 'Nome fantasia',	with: same_trade_name
+      fill_in 'Razão social',	with: 'Pega e Leva ME'
+      fill_in 'CNPJ',	with: CNPJ.generate(true)
+      fill_in 'E-mail',	with: 'contato@paleva.com.br'
+      fill_in 'Telefone',	with: '0123456789'
+      fill_in 'Nome da rua', with: 'AV Kennedy'
+      fill_in 'Número',	with: '123'
+      fill_in 'Bairro',	with: 'Forte'
+      fill_in 'Cidade',	with: 'Praia Grande'
+      fill_in 'Estado',	with: same_state
+      fill_in 'País',	with: 'Brasil'
+
+      click_on 'Criar Estabelecimento'
+
+      expect(page).to have_content 'Nome fantasia já está em uso'
       expect(current_path).to eq establishments_path
       expect(user.establishment.nil?).to be true
     end
