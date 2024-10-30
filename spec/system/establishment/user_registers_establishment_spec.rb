@@ -10,7 +10,7 @@ describe "Establishment registration" do
   }
 
   context "with invalid data" do
-    it "can not register with invalid format business national id" do
+    it "can not register with invalid formatted business national id" do
       login_as(user)
       visit root_path
 
@@ -33,7 +33,7 @@ describe "Establishment registration" do
       expect(user.establishment.nil?).to be true
     end
 
-    it "can not register with business national id already taken " do
+    it "can not register when business national id already taken " do
       same_business_national_id = CNPJ.generate(true)
 
       other_user = User.create!(
@@ -70,6 +70,70 @@ describe "Establishment registration" do
       click_on 'Criar Estabelecimento'
 
       expect(page).to have_content 'CNPJ já está em uso'
+      expect(current_path).to eq establishments_path
+      expect(user.establishment.nil?).to be true
+    end
+
+    it "can not register with invalid formatted email" do
+      login_as(user)
+      visit root_path
+
+      fill_in "Nome fantasia",	with: "Paleva"
+      fill_in "Razão social",	with: "Pega e Leva ME"
+      fill_in "CNPJ",	with: CNPJ.generate(true)
+      fill_in "E-mail",	with: "contatopaleva.com.br"
+      fill_in "Telefone",	with: "0123456789"
+      fill_in "Nome da rua", with: "AV Kennedy"
+      fill_in "Número",	with: "123"
+      fill_in "Bairro",	with: "Forte"
+      fill_in "Cidade",	with: "Praia Grande"
+      fill_in "Estado",	with: "São Paulo"
+      fill_in "País",	with: "Brasil"
+
+      click_on 'Criar Estabelecimento'
+
+      expect(page).to have_content 'E-mail Inválido'
+      expect(current_path).to eq establishments_path
+      expect(user.establishment.nil?).to be true
+    end
+
+    it "can not register when email already taken " do
+      same_email_address = "contato@papega.com.br"
+
+      other_user = User.create!(
+        name: 'Bill',
+        lastname: 'Gates',
+        personal_national_id: CPF.generate(true),
+        email: 'billgates@outlook.com',
+        password: 'bill2*6gates')
+
+      Establishment.create!(
+        trade_name: 'Papega',
+        legal_name: 'Pede e Pega ME',
+        business_national_id: CNPJ.generate(true),
+        phone: '0123456789',
+        email: same_email_address,
+        owner: other_user
+      )
+
+      login_as(user)
+      visit root_path
+
+      fill_in "Nome fantasia",	with: "Paleva"
+      fill_in "Razão social",	with: "Pega e Leva ME"
+      fill_in "CNPJ",	with: CNPJ.generate(true)
+      fill_in "E-mail",	with: same_email_address
+      fill_in "Telefone",	with: "0123456789"
+      fill_in "Nome da rua", with: "AV Kennedy"
+      fill_in "Número",	with: "123"
+      fill_in "Bairro",	with: "Forte"
+      fill_in "Cidade",	with: "Praia Grande"
+      fill_in "Estado",	with: "São Paulo"
+      fill_in "País",	with: "Brasil"
+
+      click_on 'Criar Estabelecimento'
+
+      expect(page).to have_content 'E-mail já está em uso'
       expect(current_path).to eq establishments_path
       expect(user.establishment.nil?).to be true
     end
