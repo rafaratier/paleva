@@ -190,4 +190,33 @@ describe "Establishment registration" do
       expect(user.establishment.nil?).to be true
     end
   end
+
+  context "with valid data" do
+    it "gets registered successfuly with address" do
+      login_as(user)
+      visit root_path
+
+      fill_in 'Nome fantasia',	with: 'Papega'
+      fill_in 'Razão social',	with: 'Pega e Leva ME'
+      fill_in 'CNPJ',	with: CNPJ.generate(true)
+      fill_in 'E-mail',	with: 'contato@paleva.com.br'
+      fill_in 'Telefone',	with: '0123456789'
+      fill_in 'Nome da rua', with: 'Av Pres. Kennedy'
+      fill_in 'Número',	with: '123'
+      fill_in 'Bairro',	with: 'Forte'
+      fill_in 'Cidade',	with: 'Praia Grande'
+      fill_in 'Estado',	with: 'São Paulo'
+      fill_in 'País',	with: 'Brasil'
+
+      click_on 'Criar Estabelecimento'
+
+      user.reload_establishment
+
+      expect(page).to have_content 'Estabelecimento cadastrado com sucesso'
+      expect(current_path).to eq root_path
+      expect(user.establishment.nil?).to be false
+      expect(user.establishment.trade_name).to eq 'Papega'
+      expect(user.establishment.address.street_name).to eq 'Av Pres. Kennedy'
+    end
+  end
 end
