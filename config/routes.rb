@@ -12,5 +12,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root to: "home#index"
-  resources :establishments
+  resource :establishment, except: [ :destroy ] do
+    resource :business_hour, except: [ :destroy ]
+  end
+  resolve("Establishment") { [ :establishment ] }
+  resolve("Business_Hour") { [ :business_hour ] }
 end
