@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_28_020009) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_29_150804) do
   create_table "addresses", force: :cascade do |t|
     t.integer "establishment_id", null: false
     t.string "street_name", null: false
@@ -24,13 +24,23 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_28_020009) do
     t.index ["establishment_id"], name: "index_addresses_on_establishment_id"
   end
 
+  create_table "business_hours", force: :cascade do |t|
+    t.integer "establishment_id", null: false
+    t.integer "day_of_week"
+    t.boolean "is_open"
+    t.time "open_time"
+    t.time "close_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["establishment_id"], name: "index_business_hours_on_establishment_id"
+  end
+
   create_table "establishments", force: :cascade do |t|
     t.string "trade_name", null: false
     t.string "legal_name", null: false
     t.string "business_national_id", null: false
     t.string "phone", null: false
     t.string "email", null: false
-    t.text "business_hours", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "owner_id", null: false
@@ -60,5 +70,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_28_020009) do
   end
 
   add_foreign_key "addresses", "establishments"
+  add_foreign_key "business_hours", "establishments"
   add_foreign_key "establishments", "users", column: "owner_id"
 end
