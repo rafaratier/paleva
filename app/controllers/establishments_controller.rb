@@ -1,7 +1,4 @@
 class EstablishmentsController < ApplicationController
-  def index
-  end
-
   def new
     @establishment = Establishment.new
     @establishment.build_address
@@ -15,7 +12,7 @@ class EstablishmentsController < ApplicationController
     @establishment.owner = User.find_by(name: current_user.name)
 
     if @establishment.save
-      redirect_to root_path, notice: t("notices.establishment_created")
+      redirect_to new_establishment_business_hour_path(@establishment.id), notice: t("notices.establishment_created")
     else
       flash.now[:alert] =  @establishment.errors.full_messages.join(", ")
       render :new, status: :unprocessable_entity
