@@ -1,16 +1,15 @@
 require 'rails_helper'
 
 describe "Establishment registration" do
-  let!(:user) { User.create!(
-    name: 'Jeff',
-    lastname: 'Bezos',
-    personal_national_id: CPF.generate(true),
-    email: 'jeffbezos@amazon.com',
-    password: 'jeff2*6bezos')
-  }
-
   context "with invalid data" do
     it "can not register with invalid formatted business national id" do
+      user = User.create!(
+        name: 'Jeff',
+        lastname: 'Bezos',
+        personal_national_id: CPF.generate(true),
+        email: 'jeffbezos@amazon.com',
+        password: 'jeff2*6bezos')
+
       login_as(user)
       visit root_path
 
@@ -29,11 +28,18 @@ describe "Establishment registration" do
       click_on 'Criar Estabelecimento'
 
       expect(page).to have_content 'CNPJ Inválido'
-      expect(current_path).to eq establishments_path
+      expect(current_path).to eq establishment_path
       expect(user.establishment.nil?).to be true
     end
 
     it "can not register when business national id already taken " do
+      user = User.create!(
+        name: 'Jeff',
+        lastname: 'Bezos',
+        personal_national_id: CPF.generate(true),
+        email: 'jeffbezos@amazon.com',
+        password: 'jeff2*6bezos')
+
       same_business_national_id = CNPJ.generate(true)
 
       other_user = User.create!(
@@ -70,11 +76,18 @@ describe "Establishment registration" do
       click_on 'Criar Estabelecimento'
 
       expect(page).to have_content 'CNPJ já está em uso'
-      expect(current_path).to eq establishments_path
+      expect(current_path).to eq establishment_path
       expect(user.establishment.nil?).to be true
     end
 
     it "can not register with invalid formatted email" do
+      user = User.create!(
+        name: 'Jeff',
+        lastname: 'Bezos',
+        personal_national_id: CPF.generate(true),
+        email: 'jeffbezos@amazon.com',
+        password: 'jeff2*6bezos')
+
       login_as(user)
       visit root_path
 
@@ -93,11 +106,18 @@ describe "Establishment registration" do
       click_on 'Criar Estabelecimento'
 
       expect(page).to have_content 'E-mail Inválido'
-      expect(current_path).to eq establishments_path
+      expect(current_path).to eq establishment_path
       expect(user.establishment.nil?).to be true
     end
 
     it "can not register when email already taken" do
+      user = User.create!(
+        name: 'Jeff',
+        lastname: 'Bezos',
+        personal_national_id: CPF.generate(true),
+        email: 'jeffbezos@amazon.com',
+        password: 'jeff2*6bezos')
+
       same_email_address = "contato@papega.com.br"
 
       other_user = User.create!(
@@ -134,11 +154,18 @@ describe "Establishment registration" do
       click_on 'Criar Estabelecimento'
 
       expect(page).to have_content 'E-mail já está em uso'
-      expect(current_path).to eq establishments_path
+      expect(current_path).to eq establishment_path
       expect(user.establishment.nil?).to be true
     end
 
     it "can not register when trade name already taken within state" do
+      user = User.create!(
+        name: 'Jeff',
+        lastname: 'Bezos',
+        personal_national_id: CPF.generate(true),
+        email: 'jeffbezos@amazon.com',
+        password: 'jeff2*6bezos')
+
       same_trade_name = 'Papega'
       same_state = 'São Paulo'
 
@@ -186,13 +213,20 @@ describe "Establishment registration" do
       click_on 'Criar Estabelecimento'
 
       expect(page).to have_content 'Nome fantasia já está em uso'
-      expect(current_path).to eq establishments_path
+      expect(current_path).to eq establishment_path
       expect(user.establishment.nil?).to be true
     end
   end
 
   context "with valid data" do
     it "gets registered successfuly with address" do
+      user = User.create!(
+        name: 'Jeff',
+        lastname: 'Bezos',
+        personal_national_id: CPF.generate(true),
+        email: 'jeffbezos@amazon.com',
+        password: 'jeff2*6bezos')
+
       login_as(user)
       visit root_path
 
@@ -219,6 +253,13 @@ describe "Establishment registration" do
     end
 
     it "after successful registration, user gets redirected to register business hours" do
+      user = User.create!(
+        name: 'Jeff',
+        lastname: 'Bezos',
+        personal_national_id: CPF.generate(true),
+        email: 'jeffbezos@amazon.com',
+        password: 'jeff2*6bezos')
+
       login_as(user)
       visit root_path
 

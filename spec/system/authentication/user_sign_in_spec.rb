@@ -1,14 +1,6 @@
 require 'rails_helper'
 
 describe "User sign in" do
-  let!(:user) { User.create!(
-    name: 'Jeff',
-    lastname: 'Bezos',
-    personal_national_id: CPF.generate(true),
-    email: 'jeffbezos@amazon.com',
-    password: 'jeff2*6bezos')
-  }
-
   context "with invalid data" do
     it "can not sign with wrong email" do
       visit new_user_session_path
@@ -52,9 +44,14 @@ describe "User sign in" do
 
   context "with valid data and without registered establishment" do
     it "can successfully sign in and see establishment registration page" do
-      user = User.find_by!(email: 'jeffbezos@amazon.com')
-      logout(user)
-      visit new_user_session_path
+      user = User.create!(
+        name: 'Jeff',
+        lastname: 'Bezos',
+        personal_national_id: CPF.generate(true),
+        email: 'jeffbezos@amazon.com',
+        password: 'jeff2*6bezos')
+
+      visit root_path
 
       within('form') do
         fill_in 'E-mail', with: 'jeffbezos@amazon.com'
@@ -70,7 +67,12 @@ describe "User sign in" do
 
   context "with valid data and registered establishment" do
     it "can successfully sign in and see homepage" do
-      user = User.find_by!(email: 'jeffbezos@amazon.com')
+      user = User.create!(
+        name: 'Jeff',
+        lastname: 'Bezos',
+        personal_national_id: CPF.generate(true),
+        email: 'jeffbezos@amazon.com',
+        password: 'jeff2*6bezos')
 
       Establishment.create!(
         trade_name: 'Amazon',
@@ -81,7 +83,7 @@ describe "User sign in" do
         owner: user
       )
 
-      visit new_user_session_path
+      visit root_path
 
       within('form') do
         fill_in 'E-mail', with: 'jeffbezos@amazon.com'
@@ -91,7 +93,7 @@ describe "User sign in" do
 
       expect(page).to have_content 'Olá, Jeff Bezos'
       expect(user.establishment.nil?).to be false
-      expect(current_path).to eq root_path
+      expect(current_path).to eq new_establishment_business_hour_path(user.establishment.id)
     end
   end
 end

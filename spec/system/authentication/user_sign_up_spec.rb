@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe 'User sign up' do
-  let(:valid_cpf) { CPF.generate(true) }
-
   context 'with invalid data' do
     it 'can not create account without lastname' do
       visit new_user_session_path
@@ -11,7 +9,7 @@ describe 'User sign up' do
       within('form') do
         fill_in 'Nome', with: 'Jeff'
         fill_in 'Sobrenome', with: ''
-        fill_in 'CPF', with: valid_cpf
+        fill_in 'CPF', with: CPF.generate(true)
         fill_in 'E-mail', with: 'jeffbezos@gmail.com'
         fill_in 'Senha', with: 'jeff2*6bezos'
         fill_in 'Confirme sua senha', with: 'jeff2*6bezos'
@@ -31,7 +29,7 @@ describe 'User sign up' do
       within('form') do
         fill_in 'Nome', with: 'Jeff'
         fill_in 'Sobrenome', with: 'Bezos'
-        fill_in 'CPF', with: valid_cpf
+        fill_in 'CPF', with: CPF.generate(true)
         fill_in 'E-mail', with: ''
         fill_in 'Senha', with: 'jeff2*6bezos'
         fill_in 'Confirme sua senha', with: 'jeff2*6bezos'
@@ -49,7 +47,7 @@ describe 'User sign up' do
       User.create!(
         name: 'Jeff',
         lastname: 'Bezos',
-        personal_national_id: valid_cpf,
+        personal_national_id: CPF.generate(true),
         email: same_email,
         password: 'jeff2*6bezos'
       )
@@ -75,7 +73,7 @@ describe 'User sign up' do
       User.create!(
         name: 'Jeff',
         lastname: 'Bezos',
-        personal_national_id: valid_cpf,
+        personal_national_id: '163.925.890-66',
         email: 'jeffbezos@amazon.com',
         password: 'jeff2*6bezos'
       )
@@ -86,7 +84,7 @@ describe 'User sign up' do
       within('form') do
         fill_in 'Nome', with: 'Bill'
         fill_in 'Sobrenome', with: 'Gates'
-        fill_in 'CPF', with: valid_cpf
+        fill_in 'CPF', with: '163.925.890-66'
         fill_in 'E-mail', with: 'billgates@outlook.com'
         fill_in 'Senha', with: 'bill2*6gates'
         fill_in 'Confirme sua senha', with: 'bill2*6gates'
@@ -106,7 +104,7 @@ describe 'User sign up' do
       within('form') do
         fill_in 'Nome', with: 'Jeff'
         fill_in 'Sobrenome', with: 'Bezos'
-        fill_in 'CPF', with: valid_cpf
+        fill_in 'CPF', with: '163.925.890-66'
         fill_in 'E-mail', with: 'jeffbezos@gmail.com'
         fill_in 'Senha', with: 'jeff2*6bezos'
         fill_in 'Confirme sua senha', with: 'jeff2*6bezos'
@@ -114,7 +112,7 @@ describe 'User sign up' do
       end
 
       expect(page).to have_content 'Cadastro realizado com sucesso.'
-      expect(User.last.personal_national_id).to eq valid_cpf
+      expect(User.last.personal_national_id).to eq '163.925.890-66'
       expect(current_path).to eq new_establishment_path
     end
   end
