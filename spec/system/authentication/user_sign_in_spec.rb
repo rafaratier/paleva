@@ -65,8 +65,8 @@ describe "User sign in" do
     end
   end
 
-  context "with valid data and registered establishment" do
-    it "can successfully sign in and see homepage" do
+  context "with registered establishment" do
+    it "can successfully sign in and see business hours page" do
       user = User.create!(
         name: 'Jeff',
         lastname: 'Bezos',
@@ -74,7 +74,7 @@ describe "User sign in" do
         email: 'jeffbezos@amazon.com',
         password: 'jeff2*6bezos')
 
-      Establishment.create!(
+      establishment = Establishment.create!(
         trade_name: 'Amazon',
         legal_name: 'Amazon.com',
         business_national_id: CNPJ.generate(true),
@@ -93,7 +93,7 @@ describe "User sign in" do
 
       expect(page).to have_content 'Olá, Jeff Bezos'
       expect(user.establishment.nil?).to be false
-      expect(current_path).to eq new_establishment_business_hour_path(user.establishment.id)
+      expect(current_path).to eq establishment_business_hours_path(establishment.id)
     end
   end
 end

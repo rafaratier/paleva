@@ -1,6 +1,73 @@
 require 'rails_helper'
 
-describe "Establishment registration" do
+describe "Establishment registration step" do
+  context "with valid data" do
+    it "can successfully register the establishment" do
+      user = User.create!(
+        name: 'Jeff',
+        lastname: 'Bezos',
+        personal_national_id: CPF.generate(true),
+        email: 'jeffbezos@amazon.com',
+        password: 'jeff2*6bezos')
+
+      login_as(user)
+      visit root_path
+
+      fill_in 'Nome fantasia',	with: 'Papega'
+      fill_in 'Razão social',	with: 'Pega e Leva ME'
+      fill_in 'CNPJ',	with: CNPJ.generate(true)
+      fill_in 'E-mail',	with: 'contato@paleva.com.br'
+      fill_in 'Telefone',	with: '0123456789'
+      fill_in 'Nome da rua', with: 'Av Pres. Kennedy'
+      fill_in 'Número',	with: '123'
+      fill_in 'Bairro',	with: 'Forte'
+      fill_in 'Cidade',	with: 'Praia Grande'
+      fill_in 'Estado',	with: 'São Paulo'
+      fill_in 'País',	with: 'Brasil'
+
+      click_on 'Criar Estabelecimento'
+
+      establishment = user.reload_establishment
+
+      expect(page).to have_content 'Estabelecimento cadastrado com sucesso'
+      expect(establishment.nil?).to be false
+      expect(establishment.trade_name).to eq 'Papega'
+      expect(establishment.address.street_name).to eq 'Av Pres. Kennedy'
+    end
+
+    it "with successful establishment registration, user gets redirected to register the business hours" do
+      user = User.create!(
+        name: 'Jeff',
+        lastname: 'Bezos',
+        personal_national_id: CPF.generate(true),
+        email: 'jeffbezos@amazon.com',
+        password: 'jeff2*6bezos')
+
+      login_as(user)
+      visit root_path
+
+      fill_in 'Nome fantasia',	with: 'Papega'
+      fill_in 'Razão social',	with: 'Pega e Leva ME'
+      fill_in 'CNPJ',	with: CNPJ.generate(true)
+      fill_in 'E-mail',	with: 'contato@paleva.com.br'
+      fill_in 'Telefone',	with: '0123456789'
+      fill_in 'Nome da rua', with: 'Av Pres. Kennedy'
+      fill_in 'Número',	with: '123'
+      fill_in 'Bairro',	with: 'Forte'
+      fill_in 'Cidade',	with: 'Praia Grande'
+      fill_in 'Estado',	with: 'São Paulo'
+      fill_in 'País',	with: 'Brasil'
+
+      click_on 'Criar Estabelecimento'
+
+      establishment = user.reload_establishment
+
+      expect(page).to have_content 'Estabelecimento cadastrado com sucesso'
+      expect(establishment.nil?).to be false
+      expect(current_path).to eq establishment_business_hours_path(establishment.id)
+    end
+  end
+
   context "with invalid data" do
     it "can not register with invalid formatted business national id" do
       user = User.create!(
@@ -32,7 +99,7 @@ describe "Establishment registration" do
       expect(user.establishment.nil?).to be true
     end
 
-    it "can not register when business national id already taken " do
+    it "can not register when business national id already taken" do
       user = User.create!(
         name: 'Jeff',
         lastname: 'Bezos',
@@ -110,7 +177,7 @@ describe "Establishment registration" do
       expect(user.establishment.nil?).to be true
     end
 
-    it "can not register when email already taken" do
+    it "can not register when email is already taken" do
       user = User.create!(
         name: 'Jeff',
         lastname: 'Bezos',
@@ -158,7 +225,7 @@ describe "Establishment registration" do
       expect(user.establishment.nil?).to be true
     end
 
-    it "can not register when trade name already taken within state" do
+    it "can not register when trade name is already taken within state" do
       user = User.create!(
         name: 'Jeff',
         lastname: 'Bezos',
@@ -215,73 +282,6 @@ describe "Establishment registration" do
       expect(page).to have_content 'Nome fantasia já está em uso'
       expect(current_path).to eq establishment_path
       expect(user.establishment.nil?).to be true
-    end
-  end
-
-  context "with valid data" do
-    it "gets registered successfuly with address" do
-      user = User.create!(
-        name: 'Jeff',
-        lastname: 'Bezos',
-        personal_national_id: CPF.generate(true),
-        email: 'jeffbezos@amazon.com',
-        password: 'jeff2*6bezos')
-
-      login_as(user)
-      visit root_path
-
-      fill_in 'Nome fantasia',	with: 'Papega'
-      fill_in 'Razão social',	with: 'Pega e Leva ME'
-      fill_in 'CNPJ',	with: CNPJ.generate(true)
-      fill_in 'E-mail',	with: 'contato@paleva.com.br'
-      fill_in 'Telefone',	with: '0123456789'
-      fill_in 'Nome da rua', with: 'Av Pres. Kennedy'
-      fill_in 'Número',	with: '123'
-      fill_in 'Bairro',	with: 'Forte'
-      fill_in 'Cidade',	with: 'Praia Grande'
-      fill_in 'Estado',	with: 'São Paulo'
-      fill_in 'País',	with: 'Brasil'
-
-      click_on 'Criar Estabelecimento'
-
-      establishment = user.reload_establishment
-
-      expect(page).to have_content 'Estabelecimento cadastrado com sucesso'
-      expect(establishment.nil?).to be false
-      expect(establishment.trade_name).to eq 'Papega'
-      expect(establishment.address.street_name).to eq 'Av Pres. Kennedy'
-    end
-
-    it "after successful registration, user gets redirected to register business hours" do
-      user = User.create!(
-        name: 'Jeff',
-        lastname: 'Bezos',
-        personal_national_id: CPF.generate(true),
-        email: 'jeffbezos@amazon.com',
-        password: 'jeff2*6bezos')
-
-      login_as(user)
-      visit root_path
-
-      fill_in 'Nome fantasia',	with: 'Papega'
-      fill_in 'Razão social',	with: 'Pega e Leva ME'
-      fill_in 'CNPJ',	with: CNPJ.generate(true)
-      fill_in 'E-mail',	with: 'contato@paleva.com.br'
-      fill_in 'Telefone',	with: '0123456789'
-      fill_in 'Nome da rua', with: 'Av Pres. Kennedy'
-      fill_in 'Número',	with: '123'
-      fill_in 'Bairro',	with: 'Forte'
-      fill_in 'Cidade',	with: 'Praia Grande'
-      fill_in 'Estado',	with: 'São Paulo'
-      fill_in 'País',	with: 'Brasil'
-
-      click_on 'Criar Estabelecimento'
-
-      establishment = user.reload_establishment
-
-      expect(page).to have_content 'Estabelecimento cadastrado com sucesso'
-      expect(establishment.nil?).to be false
-      expect(current_path).to eq new_establishment_business_hour_path(establishment.id)
     end
   end
 end
