@@ -16,8 +16,9 @@ class BusinessHoursController < ApplicationController
     @business_hour = BusinessHour.find(params[:id])
 
     if @business_hour.update(business_hour_params)
-      redirect_to establishment_business_hours_path(@establishment.id), notice: "HORARIO ATUALIZADO COM SUCESSO"
+      redirect_to establishment_business_hours_path(@establishment.id), notice: "Horário atualizado com sucesso"
     else
+      flash.now[:alert] =  @business_hour.errors.full_messages.join(", ")
       render :edit, status: :unprocessable_entity
     end
   end
