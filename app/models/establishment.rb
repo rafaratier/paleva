@@ -2,10 +2,11 @@ class Establishment < ApplicationRecord
   belongs_to :owner, class_name: "User"
   has_one :address, dependent: :destroy
   has_many :business_hours, dependent: :destroy
-  accepts_nested_attributes_for :business_hours
   accepts_nested_attributes_for :address
 
   before_create :generate_code
+
+  after_create :initialize_business_hours
 
   validates :trade_name, :legal_name, :email, :business_national_id, :phone, :owner, presence: true
   validates :legal_name, :business_national_id, :email, :phone, :owner, uniqueness: true
@@ -18,7 +19,17 @@ class Establishment < ApplicationRecord
 
   validate :unique_trade_name_within_state
 
+  def opened_for_business?
+    business_hours.exists?(status: "opened")
+  end
+
   private
+
+  def initialize_business_hours
+    BusinessHour.day_of_weeks.keys.each do |day|
+      business_hours.create(day_of_week: day, status: "closed")
+    end
+  end
 
   def generate_code
     self.code = SecureRandom.alphanumeric(10)

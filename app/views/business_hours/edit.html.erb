@@ -1,0 +1,27 @@
+<h1>EDIÇÃO DE HORÁRIO</h1>
+
+<%= form_with model: [@establishment, @business_hour] do |f|%>
+  <%= f.hidden_field :day_of_week, value: f.object.day_of_week %>
+  <%= f.hidden_field :status, value: 'opened' %>
+
+  <%= f.object.day_of_week.capitalize %>
+    <div>
+      <%= f.label :open_time %>
+      <%= f.time_field :open_time %>
+
+      <%= f.label :close_time %>
+      <%= f.time_field :close_time %>
+    </div>
+
+    <%= f.submit %>
+<% end %>
+
+<%= form_with model: [@establishment, @business_hour] do |c|%>
+  <%= c.object.status.capitalize %>
+  <%= c.hidden_field :day_of_week, value: c.object.day_of_week %>
+  <%= c.hidden_field :open_time, value: '' %>
+  <%= c.hidden_field :close_time, value: '' %>
+  <%= c.hidden_field :status, value: 'closed' %>
+
+  <%= c.submit 'Estabelecimento fechado!'%>
+<% end %>

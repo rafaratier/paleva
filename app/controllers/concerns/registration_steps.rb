@@ -8,23 +8,18 @@ module RegistrationSteps
   private
 
   def require_registration_steps
-    return unless user_signed_in?
+    return unless user_signed_in? && !is_request_to_logout?
 
     if current_user.establishment.nil?
-      redirect_to new_establishment_path unless on_establishment_or_logout_path?
-      return
+      redirect_to new_establishment_path
     end
 
-    if current_user.establishment.business_hours.empty?
-      redirect_to new_establishment_business_hour_path(current_user.establishment.id) unless on_business_hour_or_logout_path?
+    if current_user.establishment.present? && !current_user.establishment.opened_for_business?
+      redirect_to establishment_business_hours_path(current_user.establishment.id)
     end
   end
 
-  def on_establishment_or_logout_path?
-    [ new_establishment_path, destroy_user_session_path, establishment_path ].include?(request.path)
-  end
-
-  def on_business_hour_or_logout_path?
-    [ new_establishment_business_hour_path(current_user.establishment.id), destroy_user_session_path ].include?(request.path)
+  def is_request_to_logout?
+    request.path == destroy_user_session_path
   end
 end

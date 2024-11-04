@@ -1,22 +1,22 @@
-<h1>REGISTRO DE ESTABELECIMENTO</h1>
+<h1>Registre seu estabelecimento</h1>
 
-<%= form_with(model: @establishment) do |f| %>
-    <%= f.label :trade_name %>
-    <%= f.text_field :trade_name %>
+<%= form_with(model: @establishment) do |establishiment_form| %>
+    <%= establishiment_form.label :trade_name %>
+    <%= establishiment_form.text_field :trade_name %>
 
-    <%= f.label :legal_name %>
-    <%= f.text_field :legal_name %>
+    <%= establishiment_form.label :legal_name %>
+    <%= establishiment_form.text_field :legal_name %>
 
-    <%= f.label :business_national_id %>
-    <%= f.text_field :business_national_id %>
+    <%= establishiment_form.label :business_national_id %>
+    <%= establishiment_form.text_field :business_national_id %>
 
-    <%= f.label :email %>
-    <%= f.text_field :email %>
+    <%= establishiment_form.label :email %>
+    <%= establishiment_form.text_field :email %>
 
-    <%= f.label :phone %>
-    <%= f.text_field :phone %>
+    <%= establishiment_form.label :phone %>
+    <%= establishiment_form.text_field :phone %>
     
-    <%= f.fields_for :address do |address_form| %>
+    <%= establishiment_form.fields_for :address do |address_form| %>
       <%= address_form.label :street_name %>
       <%= address_form.text_field :street_name %>
 
@@ -36,5 +36,5 @@
       <%= address_form.text_field :country %>
     <% end %>
 
-  <%= f.submit %>
+  <%= establishiment_form.submit %>
 <% end %>

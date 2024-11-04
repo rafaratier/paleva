@@ -1,0 +1,20 @@
+pt-BR:
+  activerecord:
+    models:
+      business_hour:
+        one: Horário de funcionamento
+        other: Horários de funcionamento
+    attributes:
+      business_hour:
+        open_time: Abre às
+        close_time: Fecha às
+    helpers:
+    errors:
+      models:
+        business_hour:
+          attributes:
+            close_time:
+              postdating: 'O horário de fechamento não pode anteceder o de abertura'
+
+              
+

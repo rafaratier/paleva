@@ -1,0 +1,9 @@
+<h1>HORARIOS DE FUNCIONAMENTO</h1>
+
+<% @business_hours.each do |object| %>
+    <div id=<%= "edit-#{object.day_of_week}" %>>
+      <strong>Dia:</strong> <%= object.day_of_week %><br>
+      <strong>Funciona?</strong> <%= object.status %>
+      <%= link_to "Editar horário", edit_establishment_business_hour_path(object) %>
+    </div>
+<% end %>

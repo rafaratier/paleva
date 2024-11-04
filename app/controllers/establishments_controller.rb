@@ -1,4 +1,9 @@
 class EstablishmentsController < ApplicationController
+  skip_before_action :require_registration_steps, only: [ :new, :create ]
+
+  def index
+  end
+
   def new
     @establishment = Establishment.new
     @establishment.build_address
@@ -9,13 +14,20 @@ class EstablishmentsController < ApplicationController
       establishment_params
     )
 
-    @establishment.owner = User.find_by(name: current_user.name)
+    @establishment.owner = User.find_by(personal_national_id: current_user.personal_national_id)
 
     if @establishment.save
-      redirect_to new_establishment_business_hour_path(@establishment.id), notice: t("notices.establishment_created")
+      redirect_to establishment_business_hours_path(@establishment.id),
+      notice: t("notices.establishment_created")
     else
       flash.now[:alert] =  @establishment.errors.full_messages.join(", ")
       render :new, status: :unprocessable_entity
+    end
+
+    def show
+    end
+
+    def edit
     end
   end
 

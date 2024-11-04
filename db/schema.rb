@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_29_150804) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_03_234528) do
   create_table "addresses", force: :cascade do |t|
     t.integer "establishment_id", null: false
     t.string "street_name", null: false
@@ -27,7 +27,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_29_150804) do
   create_table "business_hours", force: :cascade do |t|
     t.integer "establishment_id", null: false
     t.integer "day_of_week"
-    t.boolean "is_open"
+    t.string "status"
     t.time "open_time"
     t.time "close_time"
     t.datetime "created_at", null: false

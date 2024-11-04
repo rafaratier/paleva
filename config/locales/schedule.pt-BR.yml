@@ -1,0 +1,16 @@
+pt-BR:
+  activerecord:
+    models:
+      schedule:
+        one: Agenda
+        other: Agendas
+    attributes:
+      schedule:
+    helpers:
+    errors:
+      models:
+        schedule:
+          attributes:
+
+              
+
