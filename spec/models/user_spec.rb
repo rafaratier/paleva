@@ -2,13 +2,13 @@ require 'rails_helper'
 
 describe User do
   describe "#valid?" do
-    let(:valid_cpf) { CPF.generate(true) }
     context "with missing data" do
       it "should be false with no name" do
         user = User.new(
+          role: 'owner',
           name: '',
           lastname: 'Bezos',
-          personal_national_id: valid_cpf,
+          personal_national_id: CPF.generate(true),
           email: 'jeffbezos@amazon.com',
           password: 'jeff2*6bezos'
           )
@@ -18,9 +18,10 @@ describe User do
 
       it "should be false with no lastname" do
         user = User.new(
+          role: 'owner',
           name: 'Jeff',
           lastname: '',
-          personal_national_id: valid_cpf,
+          personal_national_id: CPF.generate(true),
           email: 'jeffbezos@amazon.com',
           password: 'jeff2*6bezos'
           )
@@ -30,6 +31,7 @@ describe User do
 
       it "should be false with no personal national id" do
         user = User.new(
+          role: 'owner',
           name: 'Jeff',
           lastname: 'Bezos',
           personal_national_id: '',
@@ -42,9 +44,10 @@ describe User do
 
       it "should be false with no email" do
         user = User.new(
+          role: 'owner',
           name: 'Jeff',
           lastname: 'Bezos',
-          personal_national_id: valid_cpf,
+          personal_national_id: CPF.generate(true),
           email: '',
           password: 'jeff2*6bezos'
           )
@@ -54,11 +57,25 @@ describe User do
 
       it "should be false with no password" do
         user = User.new(
+          role: 'owner',
           name: 'Jeff',
           lastname: 'Bezos',
-          personal_national_id: valid_cpf,
+          personal_national_id: CPF.generate(true),
           email: 'jeffbezos@amazon.com',
           password: ''
+          )
+
+        expect(user.valid?).to be false
+      end
+
+      it "should be false with no role" do
+        user = User.new(
+          role: '',
+          name: 'Jeff',
+          lastname: 'Bezos',
+          personal_national_id: CPF.generate(true),
+          email: 'jeffbezos@amazon.com',
+          password: 'jeff2*6bezos'
           )
 
         expect(user.valid?).to be false
@@ -68,9 +85,10 @@ describe User do
     context "with wrong data" do
       it "should be false when name is too short" do
         user = User.new(
+          role: 'owner',
           name: 'J',
           lastname: 'Bezos',
-          personal_national_id: valid_cpf,
+          personal_national_id: CPF.generate(true),
           email: 'jeffbezos@amazon.com',
           password: 'jeff2*6bezos'
           )
@@ -81,9 +99,10 @@ describe User do
 
       it "should be false when name is too large" do
         user = User.new(
+          role: 'owner',
           name: 'Jeffffffffffffffffffffffff',
           lastname: 'Bezos',
-          personal_national_id: valid_cpf,
+          personal_national_id: CPF.generate(true),
           email: 'jeffbezos@amazon.com',
           password: 'jeff2*6bezos'
           )
@@ -94,9 +113,10 @@ describe User do
 
       it "should be false when lastname is too short" do
         user = User.new(
+          role: 'owner',
           name: 'Jeff',
           lastname: 'B',
-          personal_national_id: valid_cpf,
+          personal_national_id: CPF.generate(true),
           email: 'jeffbezos@amazon.com',
           password: 'jeff2*6bezos'
           )
@@ -107,9 +127,10 @@ describe User do
 
       it "should be false when lastname is too large" do
         user = User.new(
+          role: 'owner',
           name: 'Jeff',
           lastname: 'Bezossssssssssssssssssssss',
-          personal_national_id: valid_cpf,
+          personal_national_id: CPF.generate(true),
           email: 'jeffbezos@amazon.com',
           password: 'jeff2*6bezos'
           )
@@ -120,6 +141,7 @@ describe User do
 
       it "should be false when personal national id is too short" do
         user = User.new(
+          role: 'owner',
           name: 'Jeff',
           lastname: 'Bezos',
           personal_national_id: '12345',
@@ -133,6 +155,7 @@ describe User do
 
       it "should be false when personal national id is too large" do
         user = User.new(
+          role: 'owner',
           name: 'Jeff',
           lastname: 'Bezos',
           personal_national_id: '0123.456.789-10',
@@ -146,9 +169,10 @@ describe User do
 
       it "should be false when email is too short" do
         user = User.new(
+          role: 'owner',
           name: 'Jeff',
           lastname: 'Bezos',
-          personal_national_id: valid_cpf,
+          personal_national_id: CPF.generate(true),
           email: '@amazon.com',
           password: 'jeff2*6bezosbezos'
           )
@@ -158,9 +182,10 @@ describe User do
 
       it "should be false when password is too short" do
         user = User.new(
+          role: 'owner',
           name: 'Jeff',
           lastname: 'Bezos',
-          personal_national_id: valid_cpf,
+          personal_national_id: CPF.generate(true),
           email: 'jeffbezos@amazon.com',
           password: 'jeff2*6'
           )
@@ -173,9 +198,10 @@ describe User do
     context "with correct data" do
       it "should be true" do
         user = User.new(
+          role: 'owner',
           name: 'Jeff',
           lastname: 'Bezos',
-          personal_national_id: valid_cpf,
+          personal_national_id: CPF.generate(true),
           email: 'jeffbezos@amazon.com',
           password: 'jeff2*6bezos'
           )
