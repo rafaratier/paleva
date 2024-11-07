@@ -117,10 +117,9 @@ describe 'Establishment employee sign up' do
         email: 'contato@papega.com.br',
         owner: owner)
 
-      PendingEmployee.create!(
+      establishment.pending_employees.create!(
         personal_national_id: '163.925.890-66',
-        email: 'billgates@outlook.com',
-        establishment: establishment)
+        email: 'billgates@outlook.com')
 
       same_email_address = 'billgates@outlook.com'
 
@@ -168,10 +167,9 @@ describe 'Establishment employee sign up' do
         email: 'contato@papega.com.br',
         owner: owner)
 
-      PendingEmployee.create!(
+      establishment.pending_employees.create!(
         personal_national_id: '163.925.890-66',
-        email: 'billgates@outlook.com',
-        establishment: establishment)
+        email: 'billgates@outlook.com')
 
       same_personal_national_id = '163.925.890-66'
 
@@ -201,9 +199,7 @@ describe 'Establishment employee sign up' do
       expect(page).to have_content 'CPF já está em uso'
       expect(current_path).to eq user_registration_path
     end
-  end
 
-  context 'with valid data' do
     it 'can not create account if not allowed by establishment owner' do
       owner = User.create!(
         role: 'owner',
@@ -240,6 +236,88 @@ describe 'Establishment employee sign up' do
       expect(current_path).to eq user_registration_path
     end
 
+    it 'can not create account with different email address than allowed by establishment owner' do
+      owner = User.create!(
+        role: 'owner',
+        name: 'Jeff',
+        lastname: 'Bezos',
+        personal_national_id: CPF.generate(true),
+        email: 'jeffbezos@amazon.com',
+        password: 'jeff2*6bezos')
+
+      establishment = Establishment.create!(
+        trade_name: 'Papega',
+        legal_name: 'Pede e Pega ME',
+        business_national_id: CNPJ.generate(true),
+        phone: '0123456789',
+        email: 'contato@papega.com.br',
+        owner: owner)
+
+      establishment.pending_employees.create!(
+        email: 'billgates@outlook.com',
+        personal_national_id: '163.925.890-66')
+
+      visit new_user_registration_path
+
+      within('form') do
+        choose 'Funcionário'
+        fill_in 'Nome', with: 'Bill'
+        fill_in 'Sobrenome', with: 'Gates'
+        fill_in 'CPF', with: '163.925.890-66'
+        fill_in 'E-mail', with: 'william_h_gates@outlook.com'
+        fill_in 'Senha', with: 'bill2*6gates'
+        fill_in 'Confirme sua senha', with: 'bill2*6gates'
+        click_on 'Criar conta'
+      end
+
+      expect(page).to have_content 'Você não possui permissão para cadastro como funcionário. Contate o estabelecimento responsável.'
+      expect(PendingEmployee.find_by(email: 'william_h_gates@outlook.com')).to be nil
+      expect(User.find_by(email: 'william_h_gates@outlook.com')).to be nil
+      expect(current_path).to eq user_registration_path
+    end
+
+    it 'can not create account with different personal national ID than allowed by establishment owner' do
+      owner = User.create!(
+        role: 'owner',
+        name: 'Jeff',
+        lastname: 'Bezos',
+        personal_national_id: CPF.generate(true),
+        email: 'jeffbezos@amazon.com',
+        password: 'jeff2*6bezos')
+
+      establishment = Establishment.create!(
+        trade_name: 'Papega',
+        legal_name: 'Pede e Pega ME',
+        business_national_id: CNPJ.generate(true),
+        phone: '0123456789',
+        email: 'contato@papega.com.br',
+        owner: owner)
+
+      establishment.pending_employees.create!(
+        email: 'billgates@outlook.com',
+        personal_national_id: '163.925.890-66')
+
+      visit new_user_registration_path
+
+      within('form') do
+        choose 'Funcionário'
+        fill_in 'Nome', with: 'Bill'
+        fill_in 'Sobrenome', with: 'Gates'
+        fill_in 'CPF', with: '556.452.500-01'
+        fill_in 'E-mail', with: 'billgates@outlook.com'
+        fill_in 'Senha', with: 'bill2*6gates'
+        fill_in 'Confirme sua senha', with: 'bill2*6gates'
+        click_on 'Criar conta'
+      end
+
+      expect(page).to have_content 'Você não possui permissão para cadastro como funcionário. Contate o estabelecimento responsável.'
+      expect(PendingEmployee.find_by(personal_national_id: '556.452.500-01')).to be nil
+      expect(User.find_by(personal_national_id: '556.452.500-01')).to be nil
+      expect(current_path).to eq user_registration_path
+    end
+  end
+
+  context 'with valid data' do
     it 'can successfully create account if previously allowed by establishment owner' do
       owner = User.create!(
         role: 'owner',
@@ -257,10 +335,9 @@ describe 'Establishment employee sign up' do
         email: 'contato@papega.com.br',
         owner: owner)
 
-      PendingEmployee.create!(
+      establishment.pending_employees.create!(
         email: 'billgates@outlook.com',
-        personal_national_id: '163.925.890-66',
-        establishment: establishment)
+        personal_national_id: '163.925.890-66')
 
       visit new_user_registration_path
 

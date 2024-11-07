@@ -114,10 +114,9 @@ describe 'Establishment owner sign up' do
         email: 'contato@papega.com.br',
         owner: owner)
 
-      PendingEmployee.create!(
+      establishment.pending_employees.create!(
         personal_national_id: '163.925.890-66',
-        email: 'billgates@outlook.com',
-        establishment: establishment)
+        email: 'billgates@outlook.com')
 
       same_email_address = 'billgates@outlook.com'
 
@@ -166,10 +165,9 @@ describe 'Establishment owner sign up' do
         email: 'contato@papega.com.br',
         owner: owner)
 
-      PendingEmployee.create!(
+      establishment.pending_employees.create!(
         personal_national_id: '163.925.890-66',
-        email: 'billgates@outlook.com',
-        establishment: establishment)
+        email: 'billgates@outlook.com')
 
       same_personal_national_id = '163.925.890-66'
 
