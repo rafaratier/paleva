@@ -9,3 +9,13 @@ pt-BR:
         name: Nome
         lastname: Sobrenome
         personal_national_id: CPF
+        role: Cargo
+        roles:
+          owner: Dono
+          employee: Funcionário
+    errors:
+      models:
+        user:
+          attributes:
+            role:
+              not_allowed: Você não possui permissão para cadastro como funcionário. Contate o estabelecimento responsável.

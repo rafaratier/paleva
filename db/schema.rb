@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_03_234528) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_06_191433) do
   create_table "addresses", force: :cascade do |t|
     t.integer "establishment_id", null: false
     t.string "street_name", null: false
@@ -43,12 +43,20 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_03_234528) do
     t.string "email", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "owner_id", null: false
     t.string "code"
+    t.integer "owner_id"
     t.index ["business_national_id"], name: "index_establishments_on_business_national_id", unique: true
     t.index ["email"], name: "index_establishments_on_email", unique: true
-    t.index ["owner_id"], name: "index_establishments_on_owner_id"
     t.index ["phone"], name: "index_establishments_on_phone", unique: true
+  end
+
+  create_table "pending_employees", force: :cascade do |t|
+    t.string "email"
+    t.string "personal_national_id"
+    t.integer "establishment_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["establishment_id"], name: "index_pending_employees_on_establishment_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -63,6 +71,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_03_234528) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "establishment_id"
+    t.integer "role", limit: 1
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["establishment_id"], name: "index_users_on_establishment_id"
     t.index ["personal_national_id"], name: "index_users_on_personal_national_id", unique: true
@@ -72,4 +81,5 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_03_234528) do
   add_foreign_key "addresses", "establishments"
   add_foreign_key "business_hours", "establishments"
   add_foreign_key "establishments", "users", column: "owner_id"
+  add_foreign_key "pending_employees", "establishments"
 end

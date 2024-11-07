@@ -1,5 +1,7 @@
 class Establishment < ApplicationRecord
-  belongs_to :owner, class_name: "User"
+  belongs_to :owner, class_name: "User", foreign_key: "owner_id", optional: true
+  has_many :employees, class_name: "User", foreign_key: "establishment_id", dependent: :destroy
+  has_many :pending_employees, dependent: :destroy
   has_one :address, dependent: :destroy
   has_many :business_hours, dependent: :destroy
   accepts_nested_attributes_for :address

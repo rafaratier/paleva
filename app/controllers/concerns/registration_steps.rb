@@ -9,6 +9,7 @@ module RegistrationSteps
 
   def require_registration_steps
     return unless user_signed_in? && !is_request_to_logout?
+    return if user_signed_in? && current_user.employee?
 
     if current_user.establishment.nil?
       redirect_to new_establishment_path
