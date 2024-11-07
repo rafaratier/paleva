@@ -16,12 +16,26 @@ class User < ApplicationRecord
   validate :personal_national_id_must_be_valid_CPF
   validate :employee_allowed_by_owner_to_register
 
+  after_create :set_pending_employee_as_registered
+
   private
+
+  def set_pending_employee_as_registered
+    return if role == "owner"
+
+    pending_employee = PendingEmployee
+      .find_by(personal_national_id: personal_national_id, email: email)
+
+    if pending_employee.status == "pending"
+      pending_employee.update!(status: "registered")
+    end
+  end
 
   def employee_allowed_by_owner_to_register
     return if role == "owner"
 
-    unless PendingEmployee.find_by(personal_national_id: personal_national_id)
+    unless PendingEmployee
+      .find_by(personal_national_id: personal_national_id, email: email)
         errors.add(:role, :not_allowed)
     end
   end

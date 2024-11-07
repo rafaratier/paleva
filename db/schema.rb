@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_06_191433) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_07_160637) do
   create_table "addresses", force: :cascade do |t|
     t.integer "establishment_id", null: false
     t.string "street_name", null: false
@@ -56,6 +56,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_06_191433) do
     t.integer "establishment_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", limit: 1
     t.index ["establishment_id"], name: "index_pending_employees_on_establishment_id"
   end
 
