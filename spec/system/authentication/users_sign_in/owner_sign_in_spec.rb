@@ -1,8 +1,16 @@
 require 'rails_helper'
 
-describe "User sign in" do
+describe "Owner sign in" do
   context "with invalid data" do
     it "can not sign with wrong email" do
+      User.create!(
+        role: 'owner',
+        name: 'Jeff',
+        lastname: 'Bezos',
+        personal_national_id: CPF.generate(true),
+        email: 'jeffbezos@amazon.com',
+        password: 'jeff2*6bezos')
+
       visit new_user_session_path
 
       within('form') do
@@ -11,11 +19,20 @@ describe "User sign in" do
         click_on 'Entrar'
       end
 
+      expect(User.find_by(email: 'jeffbOzOs@amazon.com')).to be nil
       expect(page).to have_content 'E-mail ou senha inválidos.'
       expect(current_path).to eq new_user_session_path
     end
 
     it "can not sign with wrong password" do
+      User.create!(
+        role: 'owner',
+        name: 'Jeff',
+        lastname: 'Bezos',
+        personal_national_id: CPF.generate(true),
+        email: 'jeffbezos@amazon.com',
+        password: 'jeff2*6bezos')
+
       visit new_user_session_path
 
       within('form') do
@@ -37,6 +54,7 @@ describe "User sign in" do
         click_on 'Entrar'
       end
 
+      expect(User.find_by(email: 'billgatesoutlook.com')).to be nil
       expect(page).to have_content 'E-mail ou senha inválidos.'
       expect(current_path).to eq new_user_session_path
     end
@@ -44,7 +62,8 @@ describe "User sign in" do
 
   context "with valid data and without registered establishment" do
     it "can successfully sign in and see establishment registration page" do
-      user = User.create!(
+      owner = User.create!(
+        role: 'owner',
         name: 'Jeff',
         lastname: 'Bezos',
         personal_national_id: CPF.generate(true),
@@ -60,14 +79,15 @@ describe "User sign in" do
       end
 
       expect(page).to have_content 'Olá, Jeff Bezos'
-      expect(user.establishment.nil?).to be true
+      expect(owner.establishment.nil?).to be true
       expect(current_path).to eq new_establishment_path
     end
   end
 
   context "with registered establishment" do
     it "can successfully sign in and see business hours page" do
-      user = User.create!(
+      owner = User.create!(
+        role: 'owner',
         name: 'Jeff',
         lastname: 'Bezos',
         personal_national_id: CPF.generate(true),
@@ -80,8 +100,7 @@ describe "User sign in" do
         business_national_id: CNPJ.generate(true),
         phone: '0123456789',
         email: 'contact@amazon.com',
-        owner: user
-      )
+        owner: owner)
 
       visit root_path
 
@@ -92,7 +111,7 @@ describe "User sign in" do
       end
 
       expect(page).to have_content 'Olá, Jeff Bezos'
-      expect(user.establishment.nil?).to be false
+      expect(owner.owned_establishment.nil?).to be false
       expect(current_path).to eq establishment_business_hours_path(establishment.id)
     end
   end
