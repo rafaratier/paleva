@@ -9,14 +9,14 @@ module RegistrationSteps
 
   def require_registration_steps
     return unless user_signed_in? && !is_request_to_logout?
-    return if user_signed_in? && current_user.employee?
+    return unless user_signed_in? && current_user.owner?
 
-    if current_user.establishment.nil?
+    if current_user.owned_establishment.nil?
       redirect_to new_establishment_path
     end
 
-    if current_user.establishment.present? && !current_user.establishment.opened_for_business?
-      redirect_to establishment_business_hours_path(current_user.establishment.id)
+    if current_user.owned_establishment.present? && !current_user.owned_establishment.opened_for_business?
+      redirect_to establishment_business_hours_path(current_user.owned_establishment.id)
     end
   end
 
