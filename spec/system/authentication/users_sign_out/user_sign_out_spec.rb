@@ -47,7 +47,7 @@ describe "User sign out" do
       end
 
       expect(owner.owned_establishment.present?).to be true
-      expect(owner.owned_establishment.opened_for_business?).to be false
+      expect(owner.owned_establishment.open_for_business?).to be false
       expect(page).to have_content 'Entrar'
       expect(current_path).to eq new_user_session_path
     end
@@ -82,7 +82,7 @@ describe "User sign out" do
       end
 
       expect(owner.owned_establishment.present?).to be true
-      expect(owner.owned_establishment.opened_for_business?).to be true
+      expect(owner.owned_establishment.open_for_business?).to be true
       expect(page).to have_content 'Entrar'
       expect(current_path).to eq new_user_session_path
     end
