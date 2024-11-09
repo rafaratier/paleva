@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
 
   before_action :set_user_full_name
 
+  before_action :set_establishment
+
   private
 
   def configure_permitted_parameters
@@ -18,5 +20,9 @@ class ApplicationController < ActionController::Base
 
   def set_user_full_name
     @user_full_name = "#{current_user.name} #{current_user.lastname}" if current_user
+  end
+
+  def set_establishment
+    @establishment = Establishment.find_by!(owner_id: current_user.id)
   end
 end

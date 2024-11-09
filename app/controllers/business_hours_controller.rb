@@ -1,5 +1,5 @@
 class BusinessHoursController < ApplicationController
-  before_action :set_establishment, only: [ :index, :update ]
+  before_action :set_establishment, only: [ :index ]
 
   skip_before_action :require_registration_steps, only: [ :index, :edit, :update ]
 
@@ -8,12 +8,14 @@ class BusinessHoursController < ApplicationController
   end
 
   def edit
-    @establishment = Establishment.find(params[:id])
     @business_hour = BusinessHour.find(params[:id])
+    @establishment = @business_hour.establishment
   end
 
   def update
-    @business_hour = BusinessHour.find(params[:id])
+    @establishment = Establishment.find(params[:id])
+    business_hour_id = params[:format].to_i
+    @business_hour = @establishment.business_hours.find { |bh| bh.id == business_hour_id }
 
     if @business_hour.update(business_hour_params)
       redirect_to establishment_business_hours_path(@establishment.id), notice: "Horário atualizado com sucesso"

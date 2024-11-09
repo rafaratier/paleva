@@ -6,15 +6,32 @@ pt-BR:
         other: Horários de funcionamento
     attributes:
       business_hour:
+        status:
+          opened: Aberto
+          closed: Fechado
+        day_of_weeks:
+          sunday: Domingo
+          monday: Segunda-feira
+          tuesday: Terça-feira
+          wednesday: Quarta-feira
+          thursday: Quinta-feira
+          friday: Sexta-feira
+          saturday: Sábado
         open_time: Abre às
         close_time: Fecha às
     helpers:
+      business_hour:
+        update: Alterar horário de funcionamento
+        set_as_closed: Marcar como fechado!
+        current_day_schedule: das %{open_time} às %{close_time}
     errors:
       models:
         business_hour:
           attributes:
+            open_time:
+              time_missing: Defina os horários de abertura e fechamento
             close_time:
-              postdating: 'O horário de fechamento não pode anteceder o de abertura'
+              postdating: O horário de fechamento não pode anteceder o de abertura
 
               
 

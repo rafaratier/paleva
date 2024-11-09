@@ -1,27 +1,36 @@
-<h1>EDIÇÃO DE HORÁRIO</h1>
+<%= t('activerecord.helpers.business_hour.update') %>
 
-<%= form_with model: [@establishment, @business_hour] do |f|%>
+<%= form_with model: [@establishment, @business_hour], data: { turbo: false} do |f|%>
   <%= f.hidden_field :day_of_week, value: f.object.day_of_week %>
   <%= f.hidden_field :status, value: 'opened' %>
 
-  <%= f.object.day_of_week.capitalize %>
-    <div>
-      <%= f.label :open_time %>
-      <%= f.time_field :open_time %>
+  <%= t("activerecord.attributes.business_hour.status.#{f.object.status}") %>
 
-      <%= f.label :close_time %>
-      <%= f.time_field :close_time %>
+  <% if f.object.status == 'opened'%>
+    <div>
+      <%=
+        t('activerecord.helpers.business_hour.current_day_schedule',
+        open_time: f.object.open_time.strftime("%H:%M"),
+        close_time: f.object.close_time.strftime("%H:%M"))
+      %>
     </div>
 
-    <%= f.submit %>
-<% end %>
+    <%= f.hidden_field :day_of_week, value: f.object.day_of_week %>
+    <%= f.hidden_field :open_time, value: '' %>
+    <%= f.hidden_field :close_time, value: '' %>
+    <%= f.hidden_field :status, value: 'closed' %>
 
-<%= form_with model: [@establishment, @business_hour] do |c|%>
-  <%= c.object.status.capitalize %>
-  <%= c.hidden_field :day_of_week, value: c.object.day_of_week %>
-  <%= c.hidden_field :open_time, value: '' %>
-  <%= c.hidden_field :close_time, value: '' %>
-  <%= c.hidden_field :status, value: 'closed' %>
+    <%= f.submit t('activerecord.helpers.business_hour.set_as_closed') %>
+  <% end %>
 
-  <%= c.submit 'Estabelecimento fechado!'%>
+  <div>
+    <%= f.label :open_time %>
+    <%= f.time_field :open_time, value: '' %>
+
+    <%= f.label :close_time %>
+    <%= f.time_field :close_time, value: '' %>
+  </div>
+
+  <%= link_to t('helpers.cancel'), establishment_business_hours_path(@establishment) %>
+  <%= f.submit %>
 <% end %>

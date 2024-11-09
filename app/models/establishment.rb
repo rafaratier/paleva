@@ -21,7 +21,7 @@ class Establishment < ApplicationRecord
 
   validate :unique_trade_name_within_state
 
-  def opened_for_business?
+  def open_for_business?
     business_hours.exists?(status: "opened")
   end
 

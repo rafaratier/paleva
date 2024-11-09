@@ -15,7 +15,7 @@ module RegistrationSteps
       redirect_to new_establishment_path
     end
 
-    if current_user.owned_establishment.present? && !current_user.owned_establishment.opened_for_business?
+    if current_user.owned_establishment.present? && !current_user.owned_establishment.open_for_business?
       redirect_to establishment_business_hours_path(current_user.owned_establishment.id)
     end
   end

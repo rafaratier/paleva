@@ -1,9 +1,22 @@
-<h1>HORARIOS DE FUNCIONAMENTO</h1>
+<%= t('activerecord.models.business_hour.other') %>
 
-<% @business_hours.each do |object| %>
-    <div id=<%= "edit-#{object.day_of_week}" %>>
-      <strong>Dia:</strong> <%= object.day_of_week %><br>
-      <strong>Funciona?</strong> <%= object.status %>
-      <%= link_to "Editar horário", edit_establishment_business_hour_path(object) %>
-    </div>
+<% @business_hours.each do |schedule| %>
+  <div id=<%= "edit-#{schedule.day_of_week}" %>>
+    <%= link_to edit_establishment_business_hour_path(schedule) do %>
+      <strong>
+        <%= t("activerecord.attributes.business_hour.status.#{schedule.status}") %>
+      </strong>
+      <br>
+      <%= BusinessHour.human_enum_name(:day_of_week, schedule.day_of_week) %>
+      <br>
+      <% if schedule.status == 'opened' %>
+        <%= t("activerecord.attributes.business_hour.open_time") %>
+        <%= schedule.open_time.strftime("%H:%M") unless schedule.open_time.nil? %>
+        <br>
+        <%= t("activerecord.attributes.business_hour.close_time") %>
+        <%= schedule.close_time.strftime("%H:%M") unless schedule.close_time.nil? %>
+        <br>
+      <% end %>
+    <% end %>
+  </div>
 <% end %>

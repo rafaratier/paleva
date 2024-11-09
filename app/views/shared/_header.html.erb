@@ -1,4 +1,6 @@
 <header>
   <span>Olá, <%= @user_full_name %></span>
   <%= button_to t('devise.sessions.sign_out'), destroy_user_session_path, method: :delete %>
+  <%= link_to "Menu", root_path %>
+  <%= link_to "Horário de funcionamento", establishment_business_hours_path(@establishment) %>
 </header>
