@@ -1,0 +1,10 @@
+<div>
+  <%= t('activerecord.attributes.pending_employee.status') %>
+  <%= PendingEmployee.human_enum_name(:status, pending_employee.status ) %>
+  <br>
+  <%= t('activerecord.attributes.pending_employee.email') %>
+  <%= pending_employee.email %>
+  <br>
+  <%= t('activerecord.attributes.pending_employee.personal_national_id') %>
+  <%= pending_employee.personal_national_id %>
+</div>

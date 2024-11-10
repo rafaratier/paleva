@@ -1,0 +1,17 @@
+pt-BR:
+  activerecord:
+    models:
+      pending_employee:
+        one: Funcionário pendente
+        other: Funcionários pendentes
+    attributes:
+      pending_employee:
+        status: 'Estado:'
+        statuses:
+          pending: Pendente
+          registered: Registrado
+        email: E-mail
+        personal_national_id: CPF
+    helpers:
+      pending_employee:
+        allow_registration: Permitir cadastro

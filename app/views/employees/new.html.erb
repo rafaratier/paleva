@@ -1,0 +1,13 @@
+<h1>CRIAR PERMISSÃO DE FUNCIONÁRIO</h1>
+
+<%= form_with model: [@establishment, @pending_employee], url: establishment_employees_path(@establishment), method: :post do |f| %>
+  <%= f.label :email %>
+  <%= f.text_field :email %>
+
+  <%= f.label :personal_national_id %>
+  <%= f.text_field :personal_national_id %>
+
+  <%= f.submit t('activerecord.helpers.pending_employee.allow_registration')%>
+<% end %>
+
+<%= link_to t('helpers.cancel'), establishment_employees_path(@establishment) %>

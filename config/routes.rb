@@ -16,10 +16,8 @@ Rails.application.routes.draw do
 
   resource :establishment, except: [ :destroy ] do
     resources :business_hours, except: [ :destroy ]
-  end
 
-  resource :pending_employee do
-    get "search", to: "pending_employee#search"
+    resources :employees
   end
 
   resolve("Establishment") { [ :establishment ] }

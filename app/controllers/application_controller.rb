@@ -23,6 +23,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_establishment
+    return unless user_signed_in? && current_user.owned_establishment
     @establishment = Establishment.find_by!(owner_id: current_user.id)
   end
 end

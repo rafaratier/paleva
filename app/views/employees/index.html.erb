@@ -1,0 +1,5 @@
+<h1>PENDING EMPLOYEES</h1>
+
+<%= link_to "Nova Autorização", new_establishment_employee_path(@establishment) %>
+
+<%= render partial: 'employees/pending_employee', collection: @pending_employees %>

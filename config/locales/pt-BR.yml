@@ -2,5 +2,6 @@ pt-BR:
   notices:
     establishment_created: Estabelecimento cadastrado com sucesso
     schedule_created: Agenda cadastrada com sucesso
+    permission_registered: Permissão registrada com sucesso
   helpers:
     cancel: Cancelar
